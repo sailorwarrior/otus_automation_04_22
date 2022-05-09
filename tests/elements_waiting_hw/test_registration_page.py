@@ -15,10 +15,11 @@ class RegistrationPageLocators:
 
 def test_check_registration_page(browser, base_url):
     browser.get(f'{base_url}/index.php?route=account/register')
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(RegistrationPageLocators.FIRSTNAME_INPUT))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(RegistrationPageLocators.LASTNAME_INPUT))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(RegistrationPageLocators.EMAIL_NINPUT))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(RegistrationPageLocators.PHONE_INPUT))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(RegistrationPageLocators.PASSWORD_INPUT))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(RegistrationPageLocators.PASSWORD_CONFIRM_INPUT))
-    WebDriverWait(browser, 1).until(EC.visibility_of_element_located(RegistrationPageLocators.SUBMIT_BUTTON))
+    wait = WebDriverWait(browser, 1)
+    wait.until(EC.visibility_of_element_located(RegistrationPageLocators.FIRSTNAME_INPUT))
+    wait.until(EC.visibility_of_element_located(RegistrationPageLocators.LASTNAME_INPUT))
+    wait.until(EC.visibility_of_element_located(RegistrationPageLocators.EMAIL_NINPUT))
+    wait.until(EC.visibility_of_element_located(RegistrationPageLocators.PHONE_INPUT))
+    wait.until(EC.visibility_of_element_located(RegistrationPageLocators.PASSWORD_INPUT))
+    wait.until(EC.visibility_of_element_located(RegistrationPageLocators.PASSWORD_CONFIRM_INPUT))
+    wait.until(EC.visibility_of_element_located(RegistrationPageLocators.SUBMIT_BUTTON))
