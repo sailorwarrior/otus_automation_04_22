@@ -1,20 +1,16 @@
 import os
 import pytest
 from selenium import webdriver
-# from selenium.webdriver.chrome.service import Service
-# from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver import FirefoxOptions
 from selenium.webdriver.opera import options as OperaOptions
-
-DRIVERS = "~/Downloads/drivers"
 
 
 def pytest_addoption(parser):
     parser.addoption("--browser", default="chrome")
     parser.addoption("--drivers", default=os.path.expanduser("~/Downloads/drivers"))
     parser.addoption("--headless", action="store_true")
-    parser.addoption("--url", default="http://192.168.1.6:8081/")
+    parser.addoption("--url", default="http://192.168.0.13:8082/")
 
 
 @pytest.fixture
@@ -22,13 +18,11 @@ def browser(request):
     browser = request.config.getoption("--browser")
     drivers = request.config.getoption("--drivers")
     headless = request.config.getoption("--headless")
+    url = request.config.getoption("--url")
     if browser == 'chrome':
         options = ChromeOptions()
         if headless:
             options.headless = True
-        # можно ли использовать этот вариант, чтобы не вылезали ворнинги?
-        # https://pypi.org/project/webdriver-manager/3.5.4/
-        # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         driver = webdriver.Chrome(executable_path=f'{drivers}/chromedriver', options=options)
     elif browser == 'firefox':
         options = FirefoxOptions()
@@ -43,11 +37,25 @@ def browser(request):
     else:
         raise ValueError("Driver is not supported")
 
+    request.addfinalizer(driver.quit)
+
+    def open_path(path=""):
+        return driver.get(url + path)
+
     driver.maximize_window()
-    request.addfinalizer(driver.close)
+    driver.implicitly_wait(5)
+
+    driver.open = open_path
+    driver.open()
+
     return driver
 
 
 @pytest.fixture()
 def base_url(request):
     return request.config.getoption('--url')
+
+
+@pytest.fixture(autouse=True)
+def change_test_dir(request, monkeypatch):
+    monkeypatch.chdir(request.fspath.dirname)
