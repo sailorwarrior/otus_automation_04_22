@@ -1,3 +1,5 @@
+import datetime
+import logging
 import os
 import pytest
 from selenium import webdriver
@@ -11,6 +13,7 @@ def pytest_addoption(parser):
     parser.addoption("--drivers", default=os.path.expanduser("~/Downloads/drivers"))
     parser.addoption("--headless", action="store_true")
     parser.addoption("--url", default="http://192.168.0.13:8082/")
+    parser.addoption("--log_level", default="DEBUG")
 
 
 @pytest.fixture
@@ -19,6 +22,14 @@ def browser(request):
     drivers = request.config.getoption("--drivers")
     headless = request.config.getoption("--headless")
     url = request.config.getoption("--url")
+    log_level = request.config.getoption("--log_level")
+
+    logger = logging.getLogger(request.node.name)
+    logger.addHandler(logging.FileHandler(f"logs/{request.node.name}.log"))
+    logger.setLevel(level=log_level)
+
+    date_test_started = datetime.datetime.now()
+    logger.info(f"===> Test {request.node.name} started at {date_test_started}")
     if browser == 'chrome':
         options = ChromeOptions()
         if headless:
@@ -37,7 +48,18 @@ def browser(request):
     else:
         raise ValueError("Driver is not supported")
 
-    request.addfinalizer(driver.quit)
+    driver.log_level = log_level
+    driver.logger = logger
+    driver.test_name = request.node.name
+
+    def fin():
+        driver.quit()
+        date_test_finished = datetime.datetime.now()
+        logger.info(
+            f"===> Test {request.node.name} finished at {date_test_finished}. "
+            f"It was completed for {date_test_finished - date_test_started}")
+
+    request.addfinalizer(fin)
 
     def open_path(path=""):
         return driver.get(url + path)

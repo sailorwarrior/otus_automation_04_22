@@ -10,6 +10,7 @@ class AdminLoginPage(BasePage):
     FORGOT_PASSWORD_BUTTON = (By.XPATH, '//a[.="Forgotten Password"]')
 
     def login(self):
+        self.logger.info('Go to admin page')
         with open('../../target.json') as json_file:
             data = json.load(json_file)
         self.browser.get(self.browser.current_url + 'admin')
@@ -17,6 +18,8 @@ class AdminLoginPage(BasePage):
         self.verify_element_present(AdminLoginPage.PASSWORD_INPUT)
         self.verify_element_present(AdminLoginPage.FORGOT_PASSWORD_BUTTON)
         self.verify_element_present(AdminLoginPage.LOGIN_BUTTON)
+        self.logger.info('Login data input')
         self.browser.find_element(*self.USERNAME_INPUT).send_keys(data['admin']['login'])
         self.browser.find_element(*self.PASSWORD_INPUT).send_keys(data['admin']['password'])
+        self.logger.info('Login button click')
         self.browser.find_element(*self.LOGIN_BUTTON).click()
