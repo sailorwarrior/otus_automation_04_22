@@ -43,7 +43,4 @@ class RegistrationPage(BasePage):
     def is_registration_successful(self):
         self.logger.info('Success creation massage waiting')
         success_text = self.browser.find_element(*RegistrationPage.SUCCESS_REGISTRATION_MESSAGE).text
-        if success_text == 'Your Account Has Been Created!':
-            return True
-        else:
-            return False
+        return success_text == 'Your Account Has Been Created!'

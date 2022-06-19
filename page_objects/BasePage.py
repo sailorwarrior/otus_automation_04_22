@@ -1,5 +1,4 @@
-import logging
-
+import allure
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -11,6 +10,7 @@ class BasePage:
         self.browser = browser
         self.logger = browser.logger
 
+    @allure.step
     def verify_element_present(self, locator):
         self.logger.info(f'Waiting for element {locator[1]}')
         try:
