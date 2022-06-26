@@ -12,6 +12,7 @@ class Header(BasePage):
     CURRENCY_USD = (By.CSS_SELECTOR, 'button[name="USD"]')
 
     def my_account_open(self):
+        self.logger.info('My account opening')
         self.browser.find_element(*Header.MY_ACCOUNT_DROPDOWN).click()
 
     def register_button_click(self):
@@ -25,6 +26,7 @@ class Header(BasePage):
         return currency_value
 
     def change_currency_and_get_new_value(self, index=0):
+        self.logger.info('Currency changing')
         currency_list = [self.CURRENCY_EUR, self.CURRENCY_USD, self.CURRENCY_GBP]
         button = currency_list[index]
         currency_value_button = self.browser.find_element(*button)

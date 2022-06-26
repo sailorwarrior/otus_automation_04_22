@@ -7,5 +7,6 @@ class AdminMainPage(BasePage):
     PRODUCTS_BUTTON = (By.XPATH, '//a[text() = "Products"]')
 
     def open_products_catalog(self):
+        self.logger.info('Catalog page opening')
         self.browser.find_element(*self.CATALOG_DROPDOWN).click()
         self.browser.find_element(*self.PRODUCTS_BUTTON).click()
