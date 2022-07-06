@@ -22,6 +22,6 @@ split_for_headers = answer.split('\r\n')
 splited_headers = split_for_headers[1:len(split_for_headers) - 1]
 splited_headers_to_str = ','.join(splited_headers)
 response_stat = get_status[1][0:3]
-test = responses[int(response_stat)]
+response_desc = responses[int(response_stat)]
 print(f'Got data:\n Request Method: {get_method[0]}\n Request Source: {address_and_port}\n '
-      f'Response Status: {response_stat}: {test} \n HEADERS:{splited_headers_to_str}')
+      f'Response Status: {response_stat}: {response_desc} \n HEADERS:{splited_headers_to_str}')
