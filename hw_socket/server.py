@@ -6,10 +6,10 @@ my_socket = socket.socket()
 address_and_port = (LOCALHOST, random_port())
 my_socket.bind(address_and_port)
 print("Socket 1 binded on", address_and_port)
+BACKLOG = 10
+my_socket.listen(BACKLOG)
 
 while True:
-    BACKLOG = 10
-    my_socket.listen(BACKLOG)
 
     conn, addr = my_socket.accept()
 
@@ -28,5 +28,7 @@ while True:
         response_stat = 200
         response_desc = "OK"
 
-    print(f'Got data:\n Request Method: {get_method[0]}\n Request Source: {address_and_port}\n '
-          f'Response Status: {response_stat}: {response_desc} \n HEADERS: \n {splited_headers_to_str}')
+    answer = f'GET / HTTP/1.0\r\n Got data:\n Request Method: {get_method[0]}\n Request Source: {address_and_port}\n ' \
+             f'Response Status: {response_stat}: {response_desc} \n HEADERS: \n {splited_headers_to_str}'
+    answer = conn.send(bytes(answer, 'utf-8-sig'))
+    print(f'Received {answer} bytes')
