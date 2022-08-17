@@ -17,8 +17,8 @@ def pytest_addoption(parser):
     parser.addoption("--drivers", default=os.path.expanduser("~/Downloads/drivers"))
     parser.addoption("--headless", action="store_true")
     parser.addoption("--log_level", default="DEBUG")
-    parser.addoption("--executor", default="http://192.168.0.13")
-    parser.addoption("--url", default="http://192.168.0.13:8082")
+    parser.addoption("--executor", default="http://192.168.0.12")
+    parser.addoption("--url", default="http://192.168.0.12:8082")
     parser.addoption("--mobile", action="store_true")
     parser.addoption("--vnc", action="store_true")
     parser.addoption("--logs", action="store_true")
@@ -40,6 +40,8 @@ def browser(request):
     url = request.config.getoption("--url")
 
     logger = logging.getLogger(request.node.name)
+    if 'logs' not in os.listdir():
+        os.mkdir('logs')
     logger.addHandler(logging.FileHandler(f"logs/{request.node.name}.log"))
     logger.setLevel(level=log_level)
 
