@@ -23,7 +23,7 @@ def test_check_logo(browser, base_url):
     browser.get(base_url)
     logo = WebDriverWait(browser, 1).until(EC.visibility_of_element_located(MainPageLocators.OPENCART_LOGO))
     logo.click()
-    assert browser.current_url == f'{base_url}index.php?route=common/home'
+    assert browser.current_url == f'{base_url}/index.php?route=common/home'
 
 
 def test_check_slideshow(browser, base_url):
