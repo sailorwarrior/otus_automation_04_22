@@ -2,5 +2,18 @@
   "admin": {
     "login": "user",
     "password": "bitnami"
+  },
+  "valid_user": {
+    "login": "123456qwerty@gmail.com",
+    "password": "qwerty",
+    "invalid_password": "qwerty1"
+  },
+  "db_connect": {
+    "dbname": "bitnami_opencart",
+    "host": "192.168.0.12",
+    "port": "3306",
+    "login": "bn_opencart",
+    "password": "",
+    "": ""
   }
 }

@@ -5,3 +5,6 @@ allure-pytest==2.9.45
 pytest-xdist==2.5.0
 flake8==4.0.1
 black==22.3.0
+mysql-connector-python==8.0.23
+psycopg2-binary==2.8.6
+sqlalchemy==1.4.28

@@ -10,6 +10,11 @@ class Header(BasePage):
     CURRENCY_EUR = (By.CSS_SELECTOR, 'button[name="EUR"]')
     CURRENCY_GBP = (By.CSS_SELECTOR, 'button[name="GBP"]')
     CURRENCY_USD = (By.CSS_SELECTOR, 'button[name="USD"]')
+    CART_BUTTON = (By.CSS_SELECTOR, '#cart')
+    CART_ITEM_QUANTITY = (By.CSS_SELECTOR, '#cart-total')
+    OPENCART_LOGO = (By.CSS_SELECTOR, '#logo')
+    SUCCESSFULLY_ADDED_ALERT = (By.CSS_SELECTOR, '.alert-success')
+    WISHLIST_BUTTON = (By.CSS_SELECTOR, '#wishlist-total')
 
     def my_account_open(self):
         self.logger.info('My account opening')
@@ -34,3 +39,30 @@ class Header(BasePage):
         currency_to_change_value = currency_to_change[0]
         currency_value_button.click()
         return currency_to_change_value
+
+    def open_cart(self):
+        self.browser.find_element(*Header.CART_BUTTON).click()
+
+    def get_items_quantity_cart(self):
+        items_quantity = self.browser.find_element(*Header.CART_ITEM_QUANTITY)
+        items_quantity_text = items_quantity.text
+        splited_quantity_text = items_quantity_text.split()
+        count = splited_quantity_text[0]
+        return count
+
+    def click_on_logo(self):
+        self.browser.find_element(*Header.OPENCART_LOGO).click()
+
+    def wait_for_successful_alert(self):
+        self.verify_element_present(Header.SUCCESSFULLY_ADDED_ALERT)
+
+    def get_items_quantity_wishlist(self):
+        items_quantity = self.browser.find_element(*Header.WISHLIST_BUTTON)
+        items_quantity_text = items_quantity.text
+        splited_quantity_text = items_quantity_text.split('(')
+        count = splited_quantity_text[1][0:-1]
+        return count
+
+    def delete_items_from_wishlist(self):
+        self.browser.find_element(*Header.WISHLIST_BUTTON).click()
+
