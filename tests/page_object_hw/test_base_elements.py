@@ -2,12 +2,12 @@ import allure
 import pytest
 from allure_commons.types import Severity
 
+from framework import assert_every_el_in_list_has_substring
 from page_objects.LoginPage import LoginPage
 from page_objects.SearchPage import SearchPage
 from page_objects.WishlistPage import WishlistPage
 from page_objects.elements.FeaturedItems import FeaturedItems
 from page_objects.elements.Header import Header
-from framework import assert_every_el_in_list_has_substring
 
 
 @allure.title('Изменение валюты')
@@ -73,7 +73,10 @@ def test_fast_search(browser, db_connector):
     header = Header(browser)
     search = SearchPage(browser)
 
-    product_to_find = db_connector.get_last_product_name()
-    header.fast_search(product_to_find)
-    searched_items_names = search.get_searched_items_names()
-    assert product_to_find in searched_items_names
+    with allure.step('Ввод наименования товара и нажатие на кнопку поиска'):
+        product_to_find = db_connector.get_last_product_name()
+        header.fast_search(product_to_find)
+
+    with allure.step('Проверка, что продукт найден коррекнто'):
+        searched_items_names = search.get_searched_items_names()
+    assert_every_el_in_list_has_substring(list_of_items=searched_items_names, substring=product_to_find)
