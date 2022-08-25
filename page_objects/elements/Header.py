@@ -15,6 +15,8 @@ class Header(BasePage):
     OPENCART_LOGO = (By.CSS_SELECTOR, '#logo')
     SUCCESSFULLY_ADDED_ALERT = (By.CSS_SELECTOR, '.alert-success')
     WISHLIST_BUTTON = (By.CSS_SELECTOR, '#wishlist-total')
+    SEARCH_INPUT = (By.CSS_SELECTOR, 'input[name="search"]')
+    SEARCH_BUTTON = (By.CSS_SELECTOR, '.fa-search')
 
     def my_account_open(self):
         self.logger.info('My account opening')
@@ -66,3 +68,8 @@ class Header(BasePage):
     def delete_items_from_wishlist(self):
         self.browser.find_element(*Header.WISHLIST_BUTTON).click()
 
+    def fast_search(self, input_value):
+        test1 = self.browser.find_element(*Header.SEARCH_INPUT)
+        test1.click()
+        test1.send_keys(input_value)
+        self.browser.find_element(*Header.SEARCH_BUTTON).click()

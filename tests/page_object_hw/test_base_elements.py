@@ -1,13 +1,13 @@
-import time
-
 import allure
 import pytest
 from allure_commons.types import Severity
 
 from page_objects.LoginPage import LoginPage
+from page_objects.SearchPage import SearchPage
 from page_objects.WishlistPage import WishlistPage
 from page_objects.elements.FeaturedItems import FeaturedItems
 from page_objects.elements.Header import Header
+from framework import assert_every_el_in_list_has_substring
 
 
 @allure.title('Изменение валюты')
@@ -65,3 +65,15 @@ def test_add_item_to_wishlist(browser):
         header.wait_for_successful_alert()
         new_quantity = int(header.get_items_quantity_wishlist())
     assert new_quantity - previous_quantity == 1
+
+
+@allure.title('Быстрый поиск')
+@allure.severity(severity_level=Severity.CRITICAL)
+def test_fast_search(browser, db_connector):
+    header = Header(browser)
+    search = SearchPage(browser)
+
+    product_to_find = db_connector.get_last_product_name()
+    header.fast_search(product_to_find)
+    searched_items_names = search.get_searched_items_names()
+    assert product_to_find in searched_items_names
