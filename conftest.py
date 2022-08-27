@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 import os
+from pathlib import Path
 
 import allure
 import pytest
@@ -138,9 +139,10 @@ def change_test_dir(request, monkeypatch):
 
 @pytest.fixture(scope='session')
 def db_connector(request):
-    with open('target.json') as db_conf:
+    myself = Path(__file__).resolve()
+    res = myself.parents[1] / 'otus_automation_04_22/target.json'
+    with open(res) as db_conf:
         db_config = json.load(db_conf)
-    # data = request.config.getoption("--target")['db_connect']
     db_fixture = DbConnector(
         user=db_config['db_connect']['login'],
         password=db_config['db_connect']['password'],

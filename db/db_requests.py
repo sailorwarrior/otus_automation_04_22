@@ -28,7 +28,7 @@ class DbConnector:
 
     def get_last_product_name(self):
         cursor = self.connection.cursor()
-        sql = f'SELECT pd.name FROM `oc_product_description` pd order by pd.product_id desc limit 1;'
+        sql = 'SELECT pd.name FROM `oc_product_description` pd order by pd.product_id desc limit 1;'
         try:
             cursor.execute(sql)
             for row in cursor.fetchall():
@@ -39,7 +39,7 @@ class DbConnector:
 
     def get_active_orders_count(self):
         cursor = self.connection.cursor()
-        sql = f"SELECT count(*) FROM `oc_order` where order_status_id = '1'"
+        sql = "SELECT count(*) FROM `oc_order` where order_status_id = '1'"
         try:
             cursor.execute(sql)
             for row in cursor.fetchall():
@@ -50,7 +50,7 @@ class DbConnector:
 
     def get_customers_count(self):
         cursor = self.connection.cursor()
-        sql = f"SELECT count(*) FROM `oc_customer`"
+        sql = 'SELECT count(*) FROM oc_customer'
         try:
             cursor.execute(sql)
             for row in cursor.fetchall():

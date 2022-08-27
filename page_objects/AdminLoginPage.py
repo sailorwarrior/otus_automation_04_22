@@ -1,6 +1,7 @@
 import json
 from selenium.webdriver.common.by import By
 from page_objects.BasePage import BasePage
+from pathlib import Path
 
 
 class AdminLoginPage(BasePage):
@@ -11,7 +12,9 @@ class AdminLoginPage(BasePage):
 
     def login(self):
         self.logger.info('Go to admin page')
-        with open('../../target.json') as json_file:
+        myself = Path(__file__).resolve()
+        res = myself.parents[1] / 'target.json'
+        with open(res) as json_file:
             data = json.load(json_file)
         self.browser.get(self.browser.current_url + 'admin')
         self.verify_element_present(AdminLoginPage.USERNAME_INPUT)

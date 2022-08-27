@@ -2,7 +2,6 @@ import json
 
 from selenium.webdriver.common.by import By
 from page_objects.BasePage import BasePage
-import pathlib
 from pathlib import Path
 
 

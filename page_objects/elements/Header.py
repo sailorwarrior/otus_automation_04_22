@@ -1,5 +1,3 @@
-import time
-
 from page_objects.BasePage import BasePage
 from selenium.webdriver.common.by import By
 

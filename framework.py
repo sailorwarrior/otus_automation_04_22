@@ -32,4 +32,4 @@ def assert_every_el_in_list_has_substring(list_of_items, substring):
             else:
                 raise AssertionError(f"Результат поиска {element} не содержит строку {substring}")
     else:
-        raise AssertionError(f"В результате работы метода венрулся пустой список")
+        raise AssertionError('В результате работы метода венрулся пустой список')
