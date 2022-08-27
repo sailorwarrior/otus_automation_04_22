@@ -33,6 +33,28 @@ class DbConnector:
             cursor.execute(sql)
             for row in cursor.fetchall():
                 result = row[0]
-            return result
+                return result
+        finally:
+            cursor.close()
+
+    def get_active_orders_count(self):
+        cursor = self.connection.cursor()
+        sql = f"SELECT count(*) FROM `oc_order` where order_status_id = '1'"
+        try:
+            cursor.execute(sql)
+            for row in cursor.fetchall():
+                result = row[0]
+                return result
+        finally:
+            cursor.close()
+
+    def get_customers_count(self):
+        cursor = self.connection.cursor()
+        sql = f"SELECT count(*) FROM `oc_customer`"
+        try:
+            cursor.execute(sql)
+            for row in cursor.fetchall():
+                result = row[0]
+                return result
         finally:
             cursor.close()

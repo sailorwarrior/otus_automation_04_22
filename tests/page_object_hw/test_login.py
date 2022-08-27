@@ -6,7 +6,7 @@ from page_objects.LoginPage import LoginPage
 
 @allure.title('Валидный логин')
 @allure.severity(severity_level=Severity.CRITICAL)
-def test_valid_login(browser, db_connector, base_url):
+def test_valid_login(browser, base_url):
     login_page = LoginPage(browser)
 
     with allure.step('Перейти на страницу регистрации и ввести валидные логин и пароль'):
@@ -16,7 +16,7 @@ def test_valid_login(browser, db_connector, base_url):
 
 @allure.title('Невалидный логин')
 @allure.severity(severity_level=Severity.CRITICAL)
-def test_invalid_login(browser, db_connector, base_url):
+def test_invalid_login(browser, base_url):
     login_page = LoginPage(browser)
 
     with allure.step('Перейти на страницу регистрации и ввести невалидные логин и пароль'):

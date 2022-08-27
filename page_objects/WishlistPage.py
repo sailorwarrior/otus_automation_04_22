@@ -8,6 +8,9 @@ class WishlistPage(BasePage):
 
     def delete_items_from_wishlist(self):
         delete_buttons_list = self.browser.find_elements(*WishlistPage.DELETE_BUTTONS_LIST)
-        for el in delete_buttons_list:
-            el.click()
-            self.verify_element_present(WishlistPage.ALERT_SUCCESS)
+        if len(delete_buttons_list) > 0:
+            for el in delete_buttons_list:
+                el.click()
+                self.verify_element_present(WishlistPage.ALERT_SUCCESS)
+        else:
+            pass

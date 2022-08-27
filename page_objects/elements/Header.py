@@ -1,3 +1,5 @@
+import time
+
 from page_objects.BasePage import BasePage
 from selenium.webdriver.common.by import By
 
@@ -17,6 +19,7 @@ class Header(BasePage):
     WISHLIST_BUTTON = (By.CSS_SELECTOR, '#wishlist-total')
     SEARCH_INPUT = (By.CSS_SELECTOR, 'input[name="search"]')
     SEARCH_BUTTON = (By.CSS_SELECTOR, '.fa-search')
+    CHECKOUT_BUTTON = (By.CSS_SELECTOR, 'a[title="Checkout"]')
 
     def my_account_open(self):
         self.logger.info('My account opening')
@@ -50,7 +53,7 @@ class Header(BasePage):
         items_quantity_text = items_quantity.text
         splited_quantity_text = items_quantity_text.split()
         count = splited_quantity_text[0]
-        return count
+        return int(count)
 
     def click_on_logo(self):
         self.browser.find_element(*Header.OPENCART_LOGO).click()
@@ -63,9 +66,9 @@ class Header(BasePage):
         items_quantity_text = items_quantity.text
         splited_quantity_text = items_quantity_text.split('(')
         count = splited_quantity_text[1][0:-1]
-        return count
+        return int(count)
 
-    def delete_items_from_wishlist(self):
+    def open_wishlist(self):
         self.browser.find_element(*Header.WISHLIST_BUTTON).click()
 
     def fast_search(self, input_value):
@@ -73,3 +76,6 @@ class Header(BasePage):
         test1.click()
         test1.send_keys(input_value)
         self.browser.find_element(*Header.SEARCH_BUTTON).click()
+
+    def open_checkout(self):
+        self.browser.find_element(*Header.CHECKOUT_BUTTON).click()

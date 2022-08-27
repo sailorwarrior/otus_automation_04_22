@@ -60,3 +60,33 @@ def test_delete_product(browser, base_url):
     current_products_count = admin_products_page.products_count_get()
 
     assert previous_products_count - current_products_count == 1
+
+
+@allure.title('Проверка количества пользователей на сайте')
+@allure.severity(severity_level=Severity.NORMAL)
+def test_check_customers_count(browser, base_url, db_connector):
+    admin_login_page = AdminLoginPage(browser)
+    admin_main_page = AdminMainPage(browser)
+    actual_customer_count = db_connector.get_customers_count()
+
+    with allure.step('Логин под админом'):
+        admin_login_page.login()
+
+    with allure.step('Проверка отображаемого количества пользователей'):
+        customer_count = admin_main_page.get_customers_count()
+        assert customer_count == actual_customer_count
+
+
+@allure.title('Проверка количества заказов на сайте')
+@allure.severity(severity_level=Severity.NORMAL)
+def test_check_orders_count(browser, base_url, db_connector):
+    admin_login_page = AdminLoginPage(browser)
+    admin_main_page = AdminMainPage(browser)
+    actual_customer_count = db_connector.get_active_orders_count()
+
+    with allure.step('Логин под админом'):
+        admin_login_page.login()
+
+    with allure.step('Проверка отображаемого количества заказов'):
+        customer_count = admin_main_page.get_orders_count()
+        assert customer_count == actual_customer_count

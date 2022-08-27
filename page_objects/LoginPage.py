@@ -2,6 +2,8 @@ import json
 
 from selenium.webdriver.common.by import By
 from page_objects.BasePage import BasePage
+import pathlib
+from pathlib import Path
 
 
 class LoginPage(BasePage):
@@ -11,7 +13,9 @@ class LoginPage(BasePage):
     INVALID_LOGIN_ALERT = (By.CSS_SELECTOR, '.alert-danger')
 
     def login(self, user, login, password):
-        with open('../../target.json') as json_file:
+        myself = Path(__file__).resolve()
+        res = myself.parents[1] / 'target.json'
+        with open(res) as json_file:
             data = json.load(json_file)
         self.browser.get(self.browser.current_url + '/index.php?route=account/login')
         self.browser.find_element(*self.EMAIL_INPUT).send_keys(data[f'{user}'][f'{login}'])
