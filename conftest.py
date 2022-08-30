@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 import os
+from pathlib import Path
 
 import allure
 import pytest
@@ -10,6 +11,8 @@ from selenium.webdriver import ChromeOptions
 from selenium.webdriver import FirefoxOptions
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.opera import options as OperaOptions
+
+from db.db_requests import DbConnector
 
 
 def pytest_addoption(parser):
@@ -134,17 +137,33 @@ def change_test_dir(request, monkeypatch):
     monkeypatch.chdir(request.fspath.dirname)
 
 
-# нашла вот такое решение для снятия скрина при возникновении ошибок в тестах. Проверила - работает.
-# Но не совсем понятно, как именно работает. Поиски в гугле особо понимания не дали. Можно ли использовать?
+@pytest.fixture(scope='session')
+def db_connector(request):
+    myself = Path(__file__).resolve()
+    res = myself.parents[1] / 'otus_automation_04_22/target.json'
+    with open(res) as db_conf:
+        db_config = json.load(db_conf)
+    db_fixture = DbConnector(
+        user=db_config['db_connect']['login'],
+        password=db_config['db_connect']['password'],
+        host=db_config['db_connect']['host'],
+        port=db_config['db_connect']['port'],
+        database=db_config['db_connect']['dbname']
+    )
+
+    def fin():
+        db_fixture.destroy()
+
+    request.addfinalizer(fin)
+    return db_fixture
+
+
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item):
-    # создаем генератор, прогоняем все хуки до получения report object
     outcome = yield
     rep = outcome.get_result()
 
-    # при вызове отчета проверяем, есть ли падение
     if rep.failed and rep.when == 'call':
-        # если файл с фейлами уже есть, даем права на запись в конец файла, если нет - создаем
         mode_for_failures = 'a' if os.path.exists('failures') else 'w'
         try:
             with open('failures', mode=mode_for_failures) as failure:

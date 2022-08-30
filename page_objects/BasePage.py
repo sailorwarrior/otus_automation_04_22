@@ -14,6 +14,9 @@ class BasePage:
     def verify_element_present(self, locator):
         self.logger.info(f'Waiting for element {locator[1]}')
         try:
-            return WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located(locator))
+            return WebDriverWait(self.browser, 10).until(EC.visibility_of_element_located(locator))
         except TimeoutException:
             raise AssertionError(f'Element with locator {locator} is not found.')
+
+    def wait_for_urt_to_change(self, current_url):
+        WebDriverWait(self.browser, 5).until(EC.url_changes(current_url))

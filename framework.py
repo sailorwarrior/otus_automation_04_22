@@ -1,4 +1,4 @@
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -22,3 +22,14 @@ def assert_element(locator, driver, timeout=1):
     except TimeoutException:
         driver.save_screenshot(f"{driver.session_id}.png")
         raise AssertionError(f"Элемент с селектором '{locator[1]}' не найден")
+
+
+def assert_every_el_in_list_has_substring(list_of_items, substring):
+    if len(list_of_items) > 0:
+        for element in list_of_items:
+            if substring in element:
+                pass
+            else:
+                raise AssertionError(f"Результат поиска {element} не содержит строку {substring}")
+    else:
+        raise AssertionError('В результате работы метода венрулся пустой список')
